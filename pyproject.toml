@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "reinforced-learning-tutorial"
+version = "0.1.0"
+description = "reinforced learning tutorial by towardsdatascience"
+authors = ["shivan rambaran <shivanrbn@hotmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flake8 = "^6.0.0"
+gym = "^0.26.2"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^6.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
