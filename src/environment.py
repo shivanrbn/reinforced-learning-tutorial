@@ -1,4 +1,3 @@
-import pygame
 import numpy as np
 import gym
 
@@ -16,11 +15,6 @@ class CustomEnv(gym.Env):
         self.ang = 0.
         self.vel_x = 0.
         self.vel_y = 0.
-
-    def init_render(self):
-        pygame.init()
-        self.window = pygame.display.set_mode((window_width, window_height))
-        self.clock = pygame.time.Clock()
 
     def reset(self):
         # reset the environment to initial state
@@ -58,54 +52,3 @@ class CustomEnv(gym.Env):
 
         observation, reward, done, info = 0., 0., False, {}
         return observation, reward, done, info
-
-    def render(self):
-        self.window.fill((0, 0, 0))
-        pygame.draw.circle(self.window, (0, 200, 200), (int(self.x), int(self.y)), 6)
-        # draw orientation
-        p1 = (self.x - 10 * np.cos(self.ang), self.y + 10 * np.sin(self.ang))
-        p2 = (self.x + 15 * np.cos(self.ang), self.y - 15 * np.sin(self.ang))
-        pygame.draw.line(self.window, (0, 100, 100),p1, p2, 2)
-        pygame.display.update()
-
-
-def pressed_to_action(keytouple):
-    action_turn = 0.
-    action_acc = 0.
-    if keytouple[115] == 1:  # back
-        action_acc -= 1
-    if keytouple[119] == 1:  # forward
-        action_acc += 1
-    if keytouple[97] == 1:  # left  is -1
-        action_turn += 1
-    if keytouple[100] == 1:  # right is +1
-        action_turn -= 1
-    # ─── KEY IDS ─────────
-    # arrow forward   : 119 w
-    # arrow backwards : 115 s
-    # arrow left      : 97 a
-    # arrow right     : 100 d
-    return np.array([action_acc, action_turn])
-
-
-environment = CustomEnv()
-environment.init_render()
-run = True
-while run:
-    # set game speed to 30 fps
-    environment.clock.tick(30)
-    # ─── CONTROLS ───────────────────────────────────────────────────────────────────
-    # end while-loop when window is closed
-    get_event = pygame.event.get()
-    for event in get_event:
-        print(event)
-        if event.type == pygame.QUIT:
-            run = False
-    # get pressed keys, generate action
-    get_pressed = pygame.key.get_pressed()
-    action = pressed_to_action(get_pressed)
-    # calculate one step
-    environment.step(action)
-    # render current state
-    environment.render()
-pygame.quit()
